@@ -1,0 +1,65 @@
+use project2;
+
+Created first table
+
+CREATE TABLE IF NOT EXISTS bird_monitoring (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    site_name VARCHAR(255),
+    sci_name VARCHAR(100),
+    com_name VARCHAR(255),
+    observer VARCHAR(100),
+    temperature FLOAT,
+    humidity FLOAT,
+    date DATE,
+    location_type VARCHAR(255)
+);
+
+checking the datatypes
+
+DESC bird_monitoring;
+
+Created second table
+CREATE TABLE IF NOT EXISTS bird_monitoring_grassland (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    plot_name VARCHAR(255),
+    observer VARCHAR(100),
+    id_method VARCHAR(100),
+    wind VARCHAR(100),
+    sci_name VARCHAR(100),
+    com_name VARCHAR(255)
+);
+
+View
+
+select * from bird_monitoring_grassland;
+
+Created third table
+CREATE TABLE IF NOT EXISTS grassland_year (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    plot_name VARCHAR(255),
+    date DATE NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL
+    sci_name VARCHAR(100),
+    com_name VARCHAR(255)
+);
+
+created fourth table 
+CREATE TABLE IF NOT EXISTS forest_year (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    plot_name VARCHAR(255),
+    date DATE NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL
+    sci_name VARCHAR(100),
+    com_name VARCHAR(255)
+);
+
+Streamlit Running 
+python -m streamlit run C:\Users\abish\Desktop\Guvi_Files\Project_Bird_Species\Bird_Species.py
+
+Displaying in Table:
+select bf.sci_name,bf.observer,bf.site_name from 
+bird_monitoring as bf inner join forest_year as fy on 
+bf.id = fy.id WHERE bf.sci_name = "Sitta carolinensis";
+
