@@ -17,7 +17,7 @@ with st.sidebar:
 
 page = st.sidebar.selectbox("Navigate", ["Home", "Seasonal Trends", "Temperature Vs Humidity", "Most Commonly Observed Birds"])
 
-# Page content
+
 if page == "Home":
     st.title('🐦🦜🦅Bird Monitoring: Forest and Grassland')
     st.title('Unquie Birds')
@@ -92,7 +92,6 @@ if page == "Home":
 elif page == "Seasonal Trends":
     st.title('☀️❄️Seasonal Trends')
 
-    # Fetch Data from Database
     forest_year = pd.DataFrame(dbread("SELECT date, sci_name, com_name FROM forest_year"), 
                                columns=['Date', 'Scientific Name', 'Common Name'])
     grassland_year = pd.DataFrame(dbread("SELECT date, sci_name, com_name FROM grassland_year"), 
@@ -102,34 +101,33 @@ elif page == "Seasonal Trends":
     bird_monitoring_grassland = pd.DataFrame(dbread("SELECT plot_name, sci_name, com_name FROM bird_monitoring_grassland"), 
                                              columns=['Plot Name', 'Scientific Name', 'Common Name'])
 
-    # Handle Empty or Null Data
     forest_year.dropna(inplace=True)
     grassland_year.dropna(inplace=True)
 
-    # Convert Date Columns to Datetime Format
+
     forest_year['Date'] = pd.to_datetime(forest_year['Date'], errors='coerce')
     grassland_year['Date'] = pd.to_datetime(grassland_year['Date'], errors='coerce')
 
-    # Extract Month for Seasonal Trends
+
     forest_year['Month'] = forest_year['Date'].dt.month
     grassland_year['Month'] = grassland_year['Date'].dt.month
 
-    # Count Sightings per Month
+
     forest_trend = forest_year['Month'].value_counts().sort_index()
     grassland_trend = grassland_year['Month'].value_counts().sort_index()
 
-    #  Plotting the Graph
+
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(forest_trend.index, forest_trend.values, marker='o', label='Forest')
     ax.plot(grassland_trend.index, grassland_trend.values, marker='s', label='Grassland')
 
-    # Adding Labels and Legend
+
     ax.set_title("Bird Sightings Trend by Month")
     ax.set_xlabel("Month")
     ax.set_ylabel("Number of Sightings")
     ax.legend()
 
-    # Display the Plot in Streamlit
+
     st.pyplot(fig)
 
 elif page == "Temperature Vs Humidity":
@@ -155,12 +153,12 @@ else:
 
     fig, ax = plt.subplots(1, 2, figsize=(25, 10))
 
-    # Forest
+
     ax[0].barh(common_birds_forest.index, common_birds_forest.values, color='orange')
     ax[0].set_title("Top 10 Birds in Forest")
     ax[0].invert_yaxis()
 
-    # Grassland
+
     ax[1].barh(common_birds_grassland.index, common_birds_grassland.values, color='skyblue')
     ax[1].set_title("Top 10 Birds in Grassland")
     ax[1].invert_yaxis()
